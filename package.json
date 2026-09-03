@@ -1,0 +1,30 @@
+{
+  "name": "devforge-ai",
+  "version": "1.0.0",
+  "description": "DevForge AI — Ultimate All-in-One Developer & AI Engineering Workstation. Privacy-first, zero-dependency, 100% client-side developer hub.",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve . -l 3000",
+    "dev": "npx serve . -l 3000",
+    "preview": "npx serve . -l 3000"
+  },
+  "keywords": [
+    "developer-tools",
+    "ai-engineering",
+    "prompt-engineering",
+    "vram-calculator",
+    "token-calculator",
+    "code-playground",
+    "soundscape",
+    "pomodoro",
+    "jwt-decoder",
+    "regex-tester"
+  ],
+  "author": "DevForge AI Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/devforge-ai.git"
+  },
+  "homepage": "https://YOUR_USERNAME.github.io/devforge-ai"
+}

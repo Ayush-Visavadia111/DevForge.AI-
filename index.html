@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-accent="cyan">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevForge AI — Ultimate Developer & AI Engineering Platform</title>
+    <meta name="description" content="All-in-one productivity suite for software developers and AI engineers. Interactive prompt workbench, token calculator, local model VRAM estimator, JSON/Regex/JWT developer tools, live sandboxes, and ambient focus soundscapes.">
+    <link rel="stylesheet" href="styles.css">
+    <!-- FontAwesome 6 for modern iconography -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Interactive Background Canvas (Constellations & Flowing Nodes) -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation Bar -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <span class="logo-icon"><i class="fa-solid fa-microchip"></i></span>
+                <span class="logo-text">DevForge<span class="accent">.AI</span></span>
+            </a>
+            
+            <nav class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link active">Overview</a>
+                <a href="#ai-workbench" class="nav-link"><i class="fa-solid fa-brain"></i> AI Workbench</a>
+                <a href="#models" class="nav-link"><i class="fa-solid fa-chart-simple"></i> Model Matrix</a>
+                <a href="#utilities" class="nav-link"><i class="fa-solid fa-screwdriver-wrench"></i> Dev Utilities</a>
+                <a href="#playground" class="nav-link"><i class="fa-solid fa-terminal"></i> Playground</a>
+                <a href="#cheatsheets" class="nav-link"><i class="fa-solid fa-code"></i> API Hub</a>
+                <a href="#snippets" class="nav-link"><i class="fa-solid fa-box-archive"></i> Snippet Vault</a>
+                <a href="#focus-lab" class="nav-link"><i class="fa-solid fa-headphones"></i> Focus Lab</a>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- Command Palette Shortcut Button -->
+                <button class="cmd-palette-btn" id="cmd-palette-btn" aria-label="Open Command Palette" title="Command Palette (Ctrl + K / Cmd + K)">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Quick Tools</span>
+                    <span class="cmd-key">Ctrl K</span>
+                </button>
+
+                <!-- Accent Color Picker Widget -->
+                <div class="accent-picker-wrapper">
+                    <button class="accent-toggle-btn" id="accent-toggle-btn" aria-label="Choose Accent Palette" title="Customize Accent Palette">
+                        <i class="fa-solid fa-palette"></i>
+                    </button>
+                    <div class="accent-palette-menu" id="accent-palette-menu">
+                        <button class="color-option" data-color="cyan">
+                            <span class="color-dot" style="background: #00f2fe;"></span> Cyber Cyan
+                        </button>
+                        <button class="color-option" data-color="purple">
+                            <span class="color-dot" style="background: #a855f7;"></span> Neon Purple
+                        </button>
+                        <button class="color-option" data-color="emerald">
+                            <span class="color-dot" style="background: #10b981;"></span> Emerald Glow
+                        </button>
+                        <button class="color-option" data-color="flame">
+                            <span class="color-dot" style="background: #f43f5e;"></span> Sunset Flame
+                        </button>
+                        <button class="color-option" data-color="amber">
+                            <span class="color-dot" style="background: #f59e0b;"></span> Golden Amber
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dark / Light Theme Toggle -->
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
+                    <i class="fa-solid fa-moon" id="theme-icon"></i>
+                </button>
+
+                <!-- Authentication / Cloud Sync Navbar Section -->
+                <div class="nav-auth-wrapper">
+                    <div id="auth-logged-out">
+                        <button class="btn btn-primary btn-sm" id="open-auth-btn">
+                            <i class="fa-solid fa-user-astronaut"></i>
+                            <span>Developer Sync</span>
+                        </button>
+                    </div>
+
+                    <div id="auth-logged-in">
+                        <button class="user-profile-btn" id="user-profile-btn" aria-label="User Profile Menu">
+                            <div class="user-avatar" id="nav-user-avatar">
+                                <span id="nav-user-initials">AI</span>
+                                <span class="user-online-dot"></span>
+                            </div>
+                            <span class="user-name-label" id="nav-user-name">AI Engineer</span>
+                            <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: var(--text-muted);"></i>
+                        </button>
+
+                        <div class="profile-dropdown-menu" id="profile-dropdown-menu">
+                            <div class="profile-menu-header">
+                                <div class="profile-header-name" id="menu-user-name">Senior AI Architect</div>
+                                <div class="profile-header-email" id="menu-user-email">architect@devforge.ai</div>
+                                <span class="profile-role-badge" id="menu-user-role">Cloud Sync Active</span>
+                            </div>
+                            <button class="profile-menu-item" id="open-portal-btn">
+                                <i class="fa-solid fa-sliders"></i>
+                                <span>Workspace Preferences</span>
+                            </button>
+                            <button class="profile-menu-item" id="portal-backup-btn">
+                                <i class="fa-solid fa-download"></i>
+                                <span>Export Workspace Data</span>
+                            </button>
+                            <button class="profile-menu-item logout" id="logout-btn">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                <span>Sign Out / Local Only</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Hamburger -->
+                <button class="hamburger" id="hamburger" aria-label="Toggle Navigation Menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+        <!-- ===================================================================
+             1. HERO SECTION & QUICK LAUNCHPAD
+             =================================================================== -->
+        <section class="hero" id="home">
+            <!-- DriftWall animated background -->
+            <div class="hero-drift-bg">
+                <div class="drift-wall" id="drift-wall" aria-hidden="true"
+                    style="
+                        --dw-perspective: 1200px;
+                        --dw-tile-w: 200px;
+                        --dw-tile-h: 132px;
+                        --dw-gap: 18px;
+                        --dw-radius: 14px;
+                        --dw-lift: 64px;
+                        --dw-dim: 0.45;
+                        --dw-gray: 0;
+                        --dw-overlay: #060010;
+                        --dw-edge: 38%;
+                    ">
+                </div>
+            </div>
+
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="badge">
+                        <span class="pulse-dot"></span> ⚡ All-In-One Developer & AI Engineering Platform
+                    </div>
+                    <h1 class="hero-title">
+                        Supercharge Your <span class="gradient-text">Software & AI</span> Workflow
+                    </h1>
+                    <p class="hero-subtitle">
+                        High-efficiency prompt engineering, token & cost calculation, local model VRAM estimators, live multi-language code sandboxes, and offline developer utilities — crafted with unmatched ergonomic comfort.
+                    </p>
+
+                    <!-- Quick Tool Launcher Pills -->
+                    <div class="hero-buttons">
+                        <a href="#ai-workbench" class="btn btn-primary">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>Launch AI Workbench</span>
+                        </a>
+                        <a href="#utilities" class="btn btn-outline">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <span>Open Dev Utilities</span>
+                        </a>
+                        <a href="#focus-lab" class="btn btn-outline">
+                            <i class="fa-solid fa-headphones"></i>
+                            <span>Focus Lab & Timer</span>
+                        </a>
+                    </div>
+
+                    <!-- Platform Metrics Bar -->
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="15">0</span>
+                            <span class="stat-label">Power Tools</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="100">0</span>
+                            <span class="stat-label">% Private & Local</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="0">0</span>
+                            <span class="stat-label">ms Server Latency</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="100">0</span>
+                            <span class="stat-label">% Open Utility</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Hero Widget: Live Quick Prompt & Token Cost Analyzer -->
+                <div class="hero-visual">
+                    <div class="ide-card spotlight-card">
+                        <div class="ide-header">
+                            <div class="ide-window-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="ide-tabs">
+                                <button class="ide-tab active" data-tab="hero-prompt">Live Prompt Studio</button>
+                                <button class="ide-tab" data-tab="hero-vram">VRAM Quick Calc</button>
+                                <button class="ide-tab" data-tab="hero-json">JSON Formatter</button>
+                            </div>
+                            <div class="ide-actions">
+                                <span class="badge-mini"><i class="fa-solid fa-bolt"></i> Realtime</span>
+                            </div>
+                        </div>
+
+                        <div class="ide-body">
+                            <!-- Hero Pane 1: Live Prompt & Token Estimator -->
+                            <div class="ide-pane active" id="pane-hero-prompt" style="padding: 1rem;">
+                                <div class="hero-quick-row">
+                                    <label style="font-size: 0.8rem; color: var(--text-muted);"><i class="fa-solid fa-robot"></i> Target Model:</label>
+                                    <select id="hero-model-select" class="quick-select">
+                                        <option value="gpt4o">GPT-4o ($2.50 / $10.00)</option>
+                                        <option value="claude35">Claude 3.5 Sonnet ($3.00 / $15.00)</option>
+                                        <option value="gemini15">Gemini 1.5 Pro ($1.25 / $5.00)</option>
+                                        <option value="deepseek">DeepSeek V3 ($0.14 / $0.28)</option>
+                                        <option value="llama">Llama 3.3 70B (Free / Local)</option>
+                                    </select>
+                                </div>
+                                <textarea id="hero-prompt-input" class="quick-textarea" rows="4" placeholder="Enter prompt or paste code to test tokens & cost...">You are an expert systems architect. Review this TypeScript service for race conditions, memory leaks, and thread-safety under 10k req/sec load.</textarea>
+                                
+                                <div class="hero-stats-badge-bar">
+                                    <div class="hero-stat-badge">
+                                        <span class="badge-title">Estimated Tokens:</span>
+                                        <span class="badge-val accent" id="hero-token-count">38 tokens</span>
+                                    </div>
+                                    <div class="hero-stat-badge">
+                                        <span class="badge-title">Cost / 1k Calls:</span>
+                                        <span class="badge-val" id="hero-cost-est">$0.095</span>
+                                    </div>
+                                    <div class="hero-stat-badge">
+                                        <span class="badge-title">Context Usage:</span>
+                                        <span class="badge-val" style="color: #10b981;">0.03% of 128k</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hero Pane 2: VRAM Quick Calc -->
+                            <div class="ide-pane" id="pane-hero-vram" style="padding: 1rem;">
+                                <div class="hero-quick-row" style="margin-bottom: 0.8rem;">
+                                    <label style="font-size: 0.8rem; color: var(--text-muted);">Model Size:</label>
+                                    <select id="hero-vram-size" class="quick-select">
+                                        <option value="8">8B (Llama 3.1 / DeepSeek)</option>
+                                        <option value="14">14B (Qwen 2.5)</option>
+                                        <option value="32">32B (Qwen 2.5 32B)</option>
+                                        <option value="70">70B (Llama 3.3 70B)</option>
+                                    </select>
+                                </div>
+                                <div class="hero-quick-row" style="margin-bottom: 0.8rem;">
+                                    <label style="font-size: 0.8rem; color: var(--text-muted);">Quantization:</label>
+                                    <select id="hero-vram-quant" class="quick-select">
+                                        <option value="4">Q4_K_M (4-bit Recommended)</option>
+                                        <option value="8">Q8_0 (8-bit High Quality)</option>
+                                        <option value="16">FP16 (16-bit Full Precision)</option>
+                                    </select>
+                                </div>
+                                <div class="vram-result-box" id="hero-vram-result">
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">Minimum GPU VRAM Required:</div>
+                                    <div style="font-size: 1.6rem; font-weight: 800; color: var(--accent-primary);" id="hero-vram-val">~5.8 GB</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted);" id="hero-vram-rec">Recommended GPU: RTX 3060 (12GB) or Apple M1/M2/M3 (16GB)</div>
+                                </div>
+                            </div>
+
+                            <!-- Hero Pane 3: Quick JSON Formatter -->
+                            <div class="ide-pane" id="pane-hero-json" style="padding: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 0.8rem; color: var(--text-muted);">Quick JSON beautifier:</span>
+                                    <button class="btn-text btn-sm" id="hero-json-format-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Format</button>
+                                </div>
+                                <textarea id="hero-json-input" class="quick-textarea" rows="4" placeholder='{"name":"DevForge","features":["AI Workbench","VRAM Calc","Regex","JSON"],"offline":true}'></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Terminal Bar -->
+                        <div class="ide-terminal-bar">
+                            <div class="terminal-status">
+                                <span class="pulse-dot"></span>
+                                <span>Engine: Active (Pure Client-Side Web Worker)</span>
+                            </div>
+                            <a href="#ai-workbench" class="run-code-btn">
+                                <i class="fa-solid fa-up-right-from-square"></i>
+                                <span>Open Full Studio</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             2. AI PROMPT & SYSTEM PROMPT WORKBENCH
+             =================================================================== -->
+        <section class="section" id="ai-workbench">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-badge"><i class="fa-solid fa-brain"></i> AI Engineering</span>
+                    <h2 class="section-title">AI Prompt & System Workbench</h2>
+                    <p class="section-description">
+                        Design, stress-test, structure, and optimize production-grade system prompts with live token counting, cost estimations, and one-click code generation for Python, Node.js, and cURL.
+                    </p>
+                </div>
+
+                <!-- Template Selector Chips -->
+                <div class="prompt-templates-bar">
+                    <span class="template-label"><i class="fa-solid fa-bolt"></i> Curated Templates:</span>
+                    <div class="template-chips">
+                        <button class="template-chip active" data-template="refactor">Code Refactor & Architecture</button>
+                        <button class="template-chip" data-template="bugfix">Bug & Memory Leak Diagnoser</button>
+                        <button class="template-chip" data-template="tests">Unit & E2E Test Synthesizer</button>
+                        <button class="template-chip" data-template="sql">SQL Query & Index Optimizer</button>
+                        <button class="template-chip" data-template="agent">Agent Tool-Calling Schema</button>
+                        <button class="template-chip" data-template="security">Security Vulnerability Auditor</button>
+                    </div>
+                </div>
+
+                <!-- Workbench Main Grid -->
+                <div class="workbench-grid">
+                    <!-- Left: Prompt Inputs & Configuration -->
+                    <div class="workbench-editor-col spotlight-card">
+                        <div class="editor-header">
+                            <div class="editor-title"><i class="fa-solid fa-terminal accent"></i> System Instruction & Role</div>
+                            <div class="editor-actions">
+                                <button class="btn-text btn-sm" id="clear-system-prompt"><i class="fa-solid fa-trash-can"></i> Clear</button>
+                            </div>
+                        </div>
+                        <textarea id="system-prompt-input" class="code-textarea" rows="4" placeholder="You are a Principal AI Architect specialized in high-performance web systems..."></textarea>
+
+                        <div class="editor-header" style="margin-top: 1rem;">
+                            <div class="editor-title"><i class="fa-solid fa-message accent"></i> User Query / Code Payload</div>
+                            <div class="editor-actions">
+                                <button class="btn-text btn-sm" id="inject-var-btn" title="Inject variable placeholder"><i class="fa-solid fa-plus"></i> Inject {{code}}</button>
+                            </div>
+                        </div>
+                        <textarea id="user-prompt-input" class="code-textarea" rows="6" placeholder="Analyze the following function for algorithmic complexity and propose a vectorized O(1) alternative..."></textarea>
+
+                        <!-- Control Parameters Bar -->
+                        <div class="prompt-params-row">
+                            <div class="param-group">
+                                <label for="prompt-model-select">Target Model</label>
+                                <select id="prompt-model-select" class="styled-select">
+                                    <option value="gpt-4o">OpenAI GPT-4o</option>
+                                    <option value="claude-3-5-sonnet">Claude 3.5 Sonnet</option>
+                                    <option value="gemini-1-5-pro">Gemini 1.5 Pro</option>
+                                    <option value="deepseek-v3">DeepSeek V3</option>
+                                    <option value="deepseek-r1">DeepSeek R1 (Reasoning)</option>
+                                    <option value="llama-3-3-70b">Llama 3.3 70B (Local/Ollama)</option>
+                                </select>
+                            </div>
+
+                            <div class="param-group">
+                                <label for="prompt-temp-slider">Temperature: <span id="temp-display" class="accent">0.2</span> (Strict)</label>
+                                <input type="range" id="prompt-temp-slider" min="0" max="1" step="0.05" value="0.2" class="styled-slider">
+                            </div>
+
+                            <div class="param-group">
+                                <label for="prompt-max-tokens">Max Response: <span id="tokens-display" class="accent">2048</span></label>
+                                <input type="range" id="prompt-max-tokens" min="256" max="8192" step="256" value="2048" class="styled-slider">
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="workbench-action-row">
+                            <button class="btn btn-primary" id="copy-full-prompt-btn">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>Copy Full Prompt</span>
+                            </button>
+                            <button class="btn btn-outline" id="optimize-prompt-btn">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <span>Enhance & Structure</span>
+                            </button>
+                            <button class="btn btn-outline" id="export-sdk-btn">
+                                <i class="fa-solid fa-code"></i>
+                                <span>Export SDK Code</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Real-time Analytics & Token Economics Card -->
+                    <div class="workbench-metrics-col">
+                        <div class="spotlight-card metric-card">
+                            <h3><i class="fa-solid fa-coins accent"></i> Token & Cost Economics</h3>
+                            
+                            <div class="token-breakdown-list">
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Estimated Input Tokens:</span>
+                                    <span class="breakdown-val" id="metric-input-tokens">0</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Max Allocated Output:</span>
+                                    <span class="breakdown-val" id="metric-output-tokens">2,048</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Total Combined Window:</span>
+                                    <span class="breakdown-val" id="metric-total-tokens">2,048</span>
+                                </div>
+                                <div class="breakdown-item highlight">
+                                    <span class="breakdown-label">Estimated Single Call:</span>
+                                    <span class="breakdown-val accent" id="metric-single-cost">$0.0205</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Est. Cost / 1,000 API Requests:</span>
+                                    <span class="breakdown-val" id="metric-k-cost">$20.50</span>
+                                </div>
+                            </div>
+
+                            <hr class="divider">
+
+                            <h4><i class="fa-solid fa-microchip accent"></i> Model Context Utilization</h4>
+                            <div class="context-bar-wrapper">
+                                <div class="context-bar">
+                                    <div class="context-fill" id="context-fill" style="width: 2%;"></div>
+                                </div>
+                                <div class="context-info-row">
+                                    <span id="context-used-pct">1.6% used</span>
+                                    <span id="context-max-label">128,000 max context</span>
+                                </div>
+                            </div>
+
+                            <div class="pricing-tip-box" id="pricing-tip">
+                                <i class="fa-solid fa-lightbulb"></i>
+                                <span>Switching to DeepSeek V3 would reduce input costs by ~94% while maintaining top-tier code intelligence.</span>
+                            </div>
+                        </div>
+
+                        <!-- Quick Prompt Quality Checker -->
+                        <div class="spotlight-card prompt-checklist-card">
+                            <h4><i class="fa-solid fa-list-check accent"></i> Prompt Quality Guardrails</h4>
+                            <ul class="guardrails-list">
+                                <li id="chk-role"><i class="fa-solid fa-circle-check"></i> Explicit persona & expertise role defined</li>
+                                <li id="chk-output"><i class="fa-solid fa-circle-check"></i> Output schema & format specified</li>
+                                <li id="chk-constraints"><i class="fa-solid fa-circle-check"></i> Negative constraints & guardrails included</li>
+                                <li id="chk-concise"><i class="fa-solid fa-circle-check"></i> Token efficiency & low fluff ratio</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             3. AI MODEL MATRIX & LOCAL HARDWARE VRAM CALCULATOR
+             =================================================================== -->
+        <section class="section" id="models">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-badge"><i class="fa-solid fa-chart-simple"></i> Hardware & Benchmarks</span>
+                    <h2 class="section-title">AI Model Intelligence & VRAM Matrix</h2>
+                    <p class="section-description">
+                        Compare frontier models on benchmarks, pricing, and context windows, or calculate exact GPU VRAM requirements and quantization needs for local deployment with Ollama, vLLM, and llama.cpp.
+                    </p>
+                </div>
+
+                <div class="models-grid">
+                    <!-- Left: Model Comparison Table -->
+                    <div class="models-table-col spotlight-card">
+                        <div class="table-header-bar">
+                            <div class="search-mini">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="model-filter-input" placeholder="Filter models (e.g. reasoning, cheap, coding)...">
+                            </div>
+                            <div class="filter-chips-mini">
+                                <button class="mini-chip active" data-modelfilter="all">All</button>
+                                <button class="mini-chip" data-modelfilter="frontier">Frontier</button>
+                                <button class="mini-chip" data-modelfilter="open">Open Weights</button>
+                                <button class="mini-chip" data-modelfilter="budget">Low Cost</button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="model-matrix-table" id="model-matrix-table">
+                                <thead>
+                                    <tr>
+                                        <th>Model</th>
+                                        <th>Provider</th>
+                                        <th>Context</th>
+                                        <th>HumanEval</th>
+                                        <th>In / Out (1M)</th>
+                                        <th>Best For</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-cat="frontier">
+                                        <td><strong>Claude 3.5 Sonnet</strong></td>
+                                        <td>Anthropic</td>
+                                        <td>200K</td>
+                                        <td><span class="score-badge">93.7%</span></td>
+                                        <td>$3.00 / $15.00</td>
+                                        <td>Complex Refactoring & Architecture</td>
+                                    </tr>
+                                    <tr data-cat="frontier">
+                                        <td><strong>GPT-4o</strong></td>
+                                        <td>OpenAI</td>
+                                        <td>128K</td>
+                                        <td><span class="score-badge">90.2%</span></td>
+                                        <td>$2.50 / $10.00</td>
+                                        <td>Multimodal, Structured Output</td>
+                                    </tr>
+                                    <tr data-cat="budget open">
+                                        <td><strong>DeepSeek V3</strong></td>
+                                        <td>DeepSeek</td>
+                                        <td>128K</td>
+                                        <td><span class="score-badge">89.1%</span></td>
+                                        <td>$0.14 / $0.28</td>
+                                        <td>Ultra-low cost high throughput</td>
+                                    </tr>
+                                    <tr data-cat="frontier">
+                                        <td><strong>DeepSeek R1</strong></td>
+                                        <td>DeepSeek</td>
+                                        <td>128K</td>
+                                        <td><span class="score-badge">96.3%</span></td>
+                                        <td>$0.55 / $2.19</td>
+                                        <td>Chain-of-thought Reasoning & Math</td>
+                                    </tr>
+                                    <tr data-cat="frontier">
+                                        <td><strong>Gemini 1.5 Pro</strong></td>
+                                        <td>Google</td>
+                                        <td>2,000K</td>
+                                        <td><span class="score-badge">84.1%</span></td>
+                                        <td>$1.25 / $5.00</td>
+                                        <td>Massive Codebase Ingestion (2M)</td>
+                                    </tr>
+                                    <tr data-cat="open">
+                                        <td><strong>Llama 3.3 70B</strong></td>
+                                        <td>Meta</td>
+                                        <td>128K</td>
+                                        <td><span class="score-badge">86.2%</span></td>
+                                        <td>Self-Hosted / $0.80</td>
+                                        <td>Self-Hosted Enterprise Agent</td>
+                                    </tr>
+                                    <tr data-cat="open budget">
+                                        <td><strong>Qwen 2.5 Coder 32B</strong></td>
+                                        <td>Alibaba</td>
+                                        <td>128K</td>
+                                        <td><span class="score-badge">92.7%</span></td>
+                                        <td>Self-Hosted / $0.30</td>
+                                        <td>Local Coding & Tool Use (32B)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Right: Local Model VRAM & Hardware Sizer -->
+                    <div class="models-vram-col spotlight-card">
+                        <div class="vram-header">
+                            <i class="fa-solid fa-server accent"></i>
+                            <div>
+                                <h3>Local Hardware & VRAM Estimator</h3>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary);">Calculate GPU VRAM needed to run open-weight models locally via Ollama or vLLM.</p>
+                            </div>
+                        </div>
+
+                        <div class="vram-controls-grid">
+                            <div class="vram-field">
+                                <label for="vram-params">Parameter Count</label>
+                                <select id="vram-params" class="styled-select">
+                                    <option value="3">3B (e.g. Llama 3.2 3B)</option>
+                                    <option value="7">7B (e.g. Mistral 7B)</option>
+                                    <option value="8" selected>8B (e.g. Llama 3.1 8B)</option>
+                                    <option value="14">14B (e.g. Qwen 2.5 14B)</option>
+                                    <option value="32">32B (e.g. Qwen 2.5 Coder 32B)</option>
+                                    <option value="70">70B (e.g. Llama 3.3 70B)</option>
+                                    <option value="120">120B+ (DeepSeek MoE Active)</option>
+                                </select>
+                            </div>
+
+                            <div class="vram-field">
+                                <label for="vram-quant">Quantization</label>
+                                <select id="vram-quant" class="styled-select">
+                                    <option value="16">FP16 (16-bit Unquantized)</option>
+                                    <option value="8">Q8_0 (8-bit High Precision)</option>
+                                    <option value="5">Q5_K_M (5-bit Balanced)</option>
+                                    <option value="4" selected>Q4_K_M (4-bit Recommended)</option>
+                                    <option value="3">Q3_K_M (3-bit Aggressive)</option>
+                                </select>
+                            </div>
+
+                            <div class="vram-field full-width">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <label for="vram-context">Context Length Target:</label>
+                                    <span id="vram-ctx-label" class="accent">16,384 tokens</span>
+                                </div>
+                                <input type="range" id="vram-context" min="4096" max="131072" step="4096" value="16384" class="styled-slider">
+                            </div>
+                        </div>
+
+                        <!-- VRAM Output Card -->
+                        <div class="vram-calculation-card">
+                            <div class="vram-meters-row">
+                                <div class="vram-meter-box">
+                                    <span class="vram-meter-title">Model Weights:</span>
+                                    <span class="vram-meter-num" id="calc-weights-gb">4.8 GB</span>
+                                </div>
+                                <div class="vram-meter-box">
+                                    <span class="vram-meter-title">KV Cache:</span>
+                                    <span class="vram-meter-num" id="calc-kv-gb">1.2 GB</span>
+                                </div>
+                                <div class="vram-meter-box highlight">
+                                    <span class="vram-meter-title">Total VRAM:</span>
+                                    <span class="vram-meter-num accent" id="calc-total-gb">6.0 GB</span>
+                                </div>
+                            </div>
+
+                            <div class="hardware-recommendation">
+                                <strong>Recommended Hardware:</strong>
+                                <p id="calc-hardware-text">NVIDIA RTX 3060 (12GB) or Apple M-Series (16GB RAM)</p>
+                            </div>
+
+                            <div class="ollama-run-snippet">
+                                <span class="ollama-label"><i class="fa-solid fa-terminal"></i> Ready-to-run CLI:</span>
+                                <code id="ollama-command">ollama run llama3.1:8b-instruct-q4_K_M</code>
+                                <button class="btn-text btn-sm" id="copy-ollama-btn" title="Copy command"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             4. SWISS-ARMY DEV UTILITIES HUB (JSON, REGEX, JWT, HASH, CRON, DIFF)
+             =================================================================== -->
+        <section class="section" id="utilities">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-badge"><i class="fa-solid fa-screwdriver-wrench"></i> Everyday Essentials</span>
+                    <h2 class="section-title">Developer Swiss-Army Utilities</h2>
+                    <p class="section-description">
+                        Clean, responsive, private utilities for everyday development. No data leaves your machine.
+                    </p>
+                </div>
+
+                <!-- Utilities Navigation Tabs -->
+                <div class="util-tabs-bar">
+                    <button class="util-tab active" data-util="json"><i class="fa-solid fa-brackets-curly"></i> JSON Studio</button>
+                    <button class="util-tab" data-util="regex"><i class="fa-solid fa-asterisk"></i> Regex Tester</button>
+                    <button class="util-tab" data-util="jwt"><i class="fa-solid fa-key"></i> JWT Inspector</button>
+                    <button class="util-tab" data-util="crypto"><i class="fa-solid fa-fingerprint"></i> UUID & Hash</button>
+                    <button class="util-tab" data-util="cron"><i class="fa-solid fa-clock"></i> Cron Explainer</button>
+                    <button class="util-tab" data-util="diff"><i class="fa-solid fa-code-compare"></i> Diff Checker</button>
+                </div>
+
+                <!-- Utility Pane 1: JSON Studio -->
+                <div class="util-pane active spotlight-card" id="pane-util-json">
+                    <div class="util-toolbar">
+                        <div class="util-toolbar-left">
+                            <button class="btn btn-primary btn-sm" id="json-beautify-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Beautify</button>
+                            <button class="btn btn-outline btn-sm" id="json-minify-btn"><i class="fa-solid fa-compress"></i> Minify</button>
+                            <button class="btn btn-outline btn-sm" id="json-to-ts-btn"><i class="fa-solid fa-code"></i> JSON to TypeScript</button>
+                            <button class="btn btn-outline btn-sm" id="json-sample-btn"><i class="fa-solid fa-file-code"></i> Sample</button>
+                        </div>
+                        <div class="util-toolbar-right">
+                            <span class="util-status-pill" id="json-status"><i class="fa-solid fa-circle-check"></i> Valid JSON</span>
+                            <button class="btn-text btn-sm" id="copy-json-btn"><i class="fa-regular fa-copy"></i> Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="util-two-col">
+                        <div>
+                            <label class="util-input-label">JSON Input / Paste:</label>
+                            <textarea id="json-input" class="code-textarea" rows="14" placeholder='{"userId": 101, "role": "Architect", "verified": true}'></textarea>
+                        </div>
+                        <div>
+                            <label class="util-input-label">Formatted Output / TypeScript Types:</label>
+                            <textarea id="json-output" class="code-textarea" rows="14" readonly placeholder="Output appears here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Utility Pane 2: Regex Tester & Matcher -->
+                <div class="util-pane spotlight-card" id="pane-util-regex">
+                    <div class="regex-controls-row">
+                        <div class="regex-input-box">
+                            <span class="regex-slash">/</span>
+                            <input type="text" id="regex-pattern" placeholder="([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)" value="[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+">
+                            <span class="regex-slash">/</span>
+                            <input type="text" id="regex-flags" value="g" title="Flags (g, i, m, s)" style="width: 45px; text-align: center;">
+                        </div>
+                        <div class="regex-quick-chips">
+                            <span class="regex-quick-label">Presets:</span>
+                            <button class="mini-chip" data-regex="email">Email</button>
+                            <button class="mini-chip" data-regex="url">URL</button>
+                            <button class="mini-chip" data-regex="ipv4">IPv4</button>
+                            <button class="mini-chip" data-regex="uuid">UUID v4</button>
+                            <button class="mini-chip" data-regex="semver">SemVer</button>
+                        </div>
+                    </div>
+
+                    <div class="util-two-col" style="margin-top: 1rem;">
+                        <div>
+                            <label class="util-input-label">Test String:</label>
+                            <textarea id="regex-test-text" class="code-textarea" rows="10">Welcome to DevForge! Contact team@devforge.ai or security-audit@enterprise.io for questions. Invalid: user@invalid</textarea>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <label class="util-input-label">Matches & Explanations:</label>
+                                <span id="regex-match-count" class="accent" style="font-size: 0.85rem; font-weight: 600;">2 matches</span>
+                            </div>
+                            <div class="regex-highlight-box" id="regex-highlight-output"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Utility Pane 3: JWT Inspector -->
+                <div class="util-pane spotlight-card" id="pane-util-jwt">
+                    <div class="jwt-input-wrapper">
+                        <label class="util-input-label">Paste JSON Web Token (JWT):</label>
+                        <textarea id="jwt-input" class="code-textarea" rows="4" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></textarea>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                            <button class="btn btn-primary btn-sm" id="decode-jwt-btn"><i class="fa-solid fa-magnifying-glass"></i> Decode Token</button>
+                            <button class="btn btn-outline btn-sm" id="sample-jwt-btn">Load Sample JWT</button>
+                        </div>
+                    </div>
+
+                    <div class="jwt-results-grid" style="margin-top: 1rem;">
+                        <div class="jwt-col">
+                            <div class="jwt-header-box"><i class="fa-solid fa-shield"></i> Header (Algorithm & Token Type)</div>
+                            <pre class="jwt-json-pre" id="jwt-header-out">{}</pre>
+                        </div>
+                        <div class="jwt-col">
+                            <div class="jwt-header-box"><i class="fa-solid fa-database"></i> Payload (Claims & Data)</div>
+                            <pre class="jwt-json-pre" id="jwt-payload-out">{}</pre>
+                        </div>
+                        <div class="jwt-col">
+                            <div class="jwt-header-box"><i class="fa-solid fa-clock-rotate-left"></i> Expiry & Security Status</div>
+                            <div class="jwt-security-card" id="jwt-security-out">
+                                <p style="color: var(--text-muted); font-size: 0.85rem;">Paste a token to verify expiration date, signature type, and claims.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Utility Pane 4: UUID & Crypto Hashes -->
+                <div class="util-pane spotlight-card" id="pane-util-crypto">
+                    <div class="crypto-tools-grid">
+                        <!-- UUID Generator -->
+                        <div class="crypto-card">
+                            <h4><i class="fa-solid fa-fingerprint accent"></i> Bulk UUID v4 Generator</h4>
+                            <div class="crypto-action-bar">
+                                <select id="uuid-count-select" class="styled-select" style="width: auto;">
+                                    <option value="1">1 UUID</option>
+                                    <option value="5" selected>5 UUIDs</option>
+                                    <option value="10">10 UUIDs</option>
+                                </select>
+                                <button class="btn btn-primary btn-sm" id="gen-uuid-btn"><i class="fa-solid fa-arrows-rotate"></i> Generate</button>
+                                <button class="btn btn-outline btn-sm" id="copy-uuid-btn"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                            <textarea id="uuid-output" class="code-textarea" rows="6" readonly></textarea>
+                        </div>
+
+                        <!-- SHA-256 Hash & Base64 Encoder -->
+                        <div class="crypto-card">
+                            <h4><i class="fa-solid fa-lock accent"></i> Hash & Base64 Converter</h4>
+                            <input type="text" id="hash-input" class="quick-input" placeholder="Type text to hash or encode...">
+                            <div class="hash-results-list">
+                                <div class="hash-item">
+                                    <span class="hash-type">SHA-256:</span>
+                                    <code id="hash-sha256" class="hash-code">-</code>
+                                </div>
+                                <div class="hash-item">
+                                    <span class="hash-type">Base64 Encoded:</span>
+                                    <code id="hash-base64" class="hash-code">-</code>
+                                </div>
+                                <div class="hash-item">
+                                    <span class="hash-type">URL Encoded:</span>
+                                    <code id="hash-urlencoded" class="hash-code">-</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Utility Pane 5: Cron Expression Builder -->
+                <div class="util-pane spotlight-card" id="pane-util-cron">
+                    <div class="cron-builder-box">
+                        <div class="cron-input-row">
+                            <label class="util-input-label">Cron Expression (5 parts):</label>
+                            <div class="cron-field-group">
+                                <input type="text" id="cron-expression" value="*/15 * * * *" class="cron-input">
+                                <button class="btn btn-primary btn-sm" id="explain-cron-btn"><i class="fa-solid fa-bolt"></i> Explain</button>
+                            </div>
+                        </div>
+
+                        <!-- Human Readable Card -->
+                        <div class="cron-human-box" id="cron-human-box">
+                            <div class="cron-human-title"><i class="fa-solid fa-calendar-check accent"></i> Human Readable Schedule:</div>
+                            <div class="cron-human-text" id="cron-human-text">Every 15 minutes, every hour, every day</div>
+                        </div>
+
+                        <!-- Quick Cron Presets -->
+                        <div class="cron-presets-row">
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Quick Presets:</span>
+                            <button class="mini-chip" data-cron="* * * * *">Every Minute</button>
+                            <button class="mini-chip" data-cron="*/15 * * * *">Every 15 Min</button>
+                            <button class="mini-chip" data-cron="0 * * * *">Every Hour</button>
+                            <button class="mini-chip" data-cron="0 0 * * *">Midnight Daily</button>
+                            <button class="mini-chip" data-cron="0 9 * * 1-5">Workdays 9:00 AM</button>
+                            <button class="mini-chip" data-cron="0 0 1 * *">1st of Month</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Utility Pane 6: Code & Prompt Diff Checker -->
+                <div class="util-pane spotlight-card" id="pane-util-diff">
+                    <div class="diff-header-bar">
+                        <button class="btn btn-primary btn-sm" id="compute-diff-btn"><i class="fa-solid fa-code-compare"></i> Compare Differences</button>
+                        <button class="btn btn-outline btn-sm" id="diff-sample-btn">Load Sample Diff</button>
+                    </div>
+
+                    <div class="util-two-col" style="margin-top: 1rem;">
+                        <div>
+                            <label class="util-input-label">Original Version (Base):</label>
+                            <textarea id="diff-original" class="code-textarea" rows="8">function calculatePrice(items) {
+  let total = 0;
+  for (let i = 0; i < items.length; i++) {
+    total += items[i].price;
+  }
+  return total;
+}</textarea>
+                        </div>
+                        <div>
+                            <label class="util-input-label">Modified Version (Target):</label>
+                            <textarea id="diff-modified" class="code-textarea" rows="8">export function calculatePrice(items: Item[]): number {
+  return items.reduce((acc, curr) => acc + curr.price, 0);
+}</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Visual Diff Output -->
+                    <div class="diff-output-container" id="diff-output-container">
+                        <div style="color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 1.5rem;">Click "Compare Differences" to see line-by-line additions and deletions.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             5. LIVE MULTI-LANGUAGE CODE PLAYGROUND & SANDBOX
+             =================================================================== -->
+        <section class="section" id="playground">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-badge"><i class="fa-solid fa-terminal"></i> Interactive Sandbox</span>
+                    <h2 class="section-title">Live Code & Query Playground</h2>
+                    <p class="section-description">
+                        Execute JavaScript/TypeScript code snippets, render live HTML/CSS web components, or test SQL queries against an in-browser SQLite-compatible relational database.
+                    </p>
+                </div>
+
+                <div class="playground-card spotlight-card">
+                    <!-- Playground Tabs -->
+                    <div class="playground-tabs-bar">
+                        <div class="playground-tabs-left">
+                            <button class="pg-tab active" data-pg="js"><i class="fa-brands fa-js"></i> JS / TS Runner</button>
+                            <button class="pg-tab" data-pg="html"><i class="fa-brands fa-html5"></i> HTML/CSS Sandbox</button>
+                            <button class="pg-tab" data-pg="sql"><i class="fa-solid fa-database"></i> SQL Query Engine</button>
+                        </div>
+                        <div class="playground-actions">
+                            <button class="btn btn-primary btn-sm" id="pg-run-btn"><i class="fa-solid fa-play"></i> Run Code</button>
+                            <button class="btn btn-outline btn-sm" id="pg-clear-btn"><i class="fa-solid fa-eraser"></i> Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- JS / TS Runner Pane -->
+                    <div class="pg-pane active" id="pg-pane-js">
+                        <div class="pg-split-container">
+                            <div class="pg-editor-half">
+                                <div class="pg-pane-label"><i class="fa-solid fa-code"></i> Editor (JavaScript ESNext):</div>
+                                <textarea id="pg-js-editor" class="pg-textarea" rows="12">// Interactive JS / TS Sandbox
+const algorithms = ['A* Search', 'Vector Embeddings', 'Transformer Attention'];
+
+const benchmark = algorithms.map((name, idx) => ({
+  id: idx + 1,
+  name,
+  latencyMs: +(Math.random() * 12 + 1).toFixed(2),
+  status: 'optimized'
+}));
+
+console.table(benchmark);
+console.log(`🚀 Ready: Processed ${benchmark.length} algorithms in browser!`);
+</textarea>
+                            </div>
+                            <div class="pg-console-half">
+                                <div class="pg-pane-label"><i class="fa-solid fa-terminal"></i> Execution Console:</div>
+                                <div class="pg-console-output" id="pg-js-console">> Console ready. Press "Run Code" to execute.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HTML / CSS Live Renderer -->
+                    <div class="pg-pane" id="pg-pane-html">
+                        <div class="pg-split-container">
+                            <div class="pg-editor-half">
+                                <div class="pg-pane-label"><i class="fa-brands fa-html5"></i> HTML & Inline CSS:</div>
+                                <textarea id="pg-html-editor" class="pg-textarea" rows="12"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; font-family: system-ui, sans-serif; background: linear-gradient(135deg, #070913, #121829); color: #fff; border-radius: 12px; padding: 20px; text-align: center;">
+  <div style="font-size: 2rem; margin-bottom: 10px;">✨</div>
+  <h2 style="margin: 0; background: linear-gradient(135deg, #00f2fe, #4facfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Live Component Sandbox</h2>
+  <p style="color: #94a3b8; font-size: 0.9rem; max-width: 320px;">Edit this markup on the left and see immediate visual rendering in this sandboxed iframe!</p>
+  <button style="background: #00f2fe; color: #000; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 700; cursor: pointer;">Interactive Button</button>
+</div></textarea>
+                            </div>
+                            <div class="pg-console-half">
+                                <div class="pg-pane-label"><i class="fa-solid fa-display"></i> Sandboxed Preview:</div>
+                                <iframe id="pg-html-preview" class="pg-iframe"></iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SQL Query Sandbox -->
+                    <div class="pg-pane" id="pg-pane-sql">
+                        <div class="pg-split-container">
+                            <div class="pg-editor-half">
+                                <div class="pg-pane-label"><i class="fa-solid fa-database"></i> SQL Editor (Preloaded Tables: <code>developers</code>, <code>ai_models</code>):</div>
+                                <textarea id="pg-sql-editor" class="pg-textarea" rows="12">SELECT name, role, primary_language, rating 
+FROM developers 
+WHERE rating >= 4.8 
+ORDER BY rating DESC;</textarea>
+                                <div class="sql-presets-bar">
+                                    <span style="font-size: 0.8rem; color: var(--text-muted);">Quick Queries:</span>
+                                    <button class="mini-chip" data-sql="SELECT * FROM developers;">All Developers</button>
+                                    <button class="mini-chip" data-sql="SELECT * FROM ai_models WHERE context_k >= 200;">Long Context LLMs</button>
+                                    <button class="mini-chip" data-sql="SELECT primary_language, COUNT(*) as dev_count FROM developers GROUP BY primary_language;">Group by Lang</button>
+                                </div>
+                            </div>
+                            <div class="pg-console-half">
+                                <div class="pg-pane-label"><i class="fa-solid fa-table"></i> Tabular Query Results:</div>
+                                <div class="pg-sql-output" id="pg-sql-output">
+                                    <table class="pg-sql-table">
+                                        <thead><tr><th>name</th><th>role</th><th>primary_language</th><th>rating</th></tr></thead>
+                                        <tbody>
+                                            <tr><td>Alex Chen</td><td>Lead AI Architect</td><td>Python</td><td>4.95</td></tr>
+                                            <tr><td>Sarah Jenkins</td><td>Distributed Systems Eng</td><td>Go</td><td>4.90</td></tr>
+                                            <tr><td>Elena Rostova</td><td>Frontend Platform Lead</td><td>TypeScript</td><td>4.85</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             6. AI DEVELOPER API & SDK CHEAT SHEETS
+             =================================================================== -->
+        <section class="section" id="cheatsheets">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-badge"><i class="fa-solid fa-code"></i> Developer Reference</span>
+                    <h2 class="section-title">AI & Modern Dev API Cheat Sheets</h2>
+                    <p class="section-description">
+                        Production-ready code recipes for Tool Calling, Streaming Responses, Vector Database Queries, and Local LLM integrations.
+                    </p>
+                </div>
+
+                <div class="cheats-grid">
+                    <!-- Cheat 1: OpenAI Tool / Function Calling -->
+                    <div class="cheat-card spotlight-card">
+                        <div class="cheat-header">
+                            <div>
+                                <h4><i class="fa-solid fa-wand-magic-sparkles accent"></i> OpenAI Tool Calling (Structured)</h4>
+                                <span class="cheat-badge">Python SDK</span>
+                            </div>
+                            <button class="btn-text btn-sm copy-cheat-btn" data-cheat="openai"><i class="fa-regular fa-copy"></i> Copy</button>
+                        </div>
+                        <pre class="cheat-code"><code>from openai import OpenAI
+
+client = OpenAI()
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "Extract user info"}],
+    tools=[{
+        "type": "function",
+        "function": {
+            "name": "save_user",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "username": {"type": "string"},
+                    "role": {"type": "string"}
+                },
+                "required": ["username", "role"]
+            }
+        }
+    }],
+    tool_choice="auto"
+)</code></pre>
+                    </div>
+
+                    <!-- Cheat 2: Anthropic Claude 3.5 Streaming -->
+                    <div class="cheat-card spotlight-card">
+                        <div class="cheat-header">
+                            <div>
+                                <h4><i class="fa-solid fa-robot accent"></i> Anthropic Claude Streaming</h4>
+                                <span class="cheat-badge">TypeScript / Node</span>
+                            </div>
+                            <button class="btn-text btn-sm copy-cheat-btn" data-cheat="anthropic"><i class="fa-regular fa-copy"></i> Copy</button>
+                        </div>
+                        <pre class="cheat-code"><code>import Anthropic from '@anthropic-ai/sdk';
+
+const anthropic = new Anthropic();
+const stream = await anthropic.messages.stream({
+  model: 'claude-3-5-sonnet-20241022',
+  max_tokens: 1024,
+  system: 'You are a staff security auditor.',
+  messages: [{ role: 'user', content: 'Audit this smart contract...' }]
+});
+
+for await (const chunk of stream) {
+  process.stdout.write(chunk.delta?.text || '');
+}</code></pre>
+                    </div>
+
+                    <!-- Cheat 3: Ollama Local API cURL -->
+                    <div class="cheat-card spotlight-card">
+                        <div class="cheat-header">
+                            <div>
+                                <h4><i class="fa-solid fa-terminal accent"></i> Ollama Local LLM REST API</h4>
+                                <span class="cheat-badge">cURL / HTTP</span>
+                            </div>
+                            <button class="btn-text btn-sm copy-cheat-btn" data-cheat="ollama"><i class="fa-regular fa-copy"></i> Copy</button>
+                        </div>
+                        <pre class="cheat-code"><code>curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.1:8b",
+  "prompt": "Explain raft consensus in 3 sentences.",
+  "stream": false,
+  "options": {
+    "temperature": 0.2,
+    "num_ctx": 16384
+  }
+}'</code></pre>
+                    </div>
+
+                    <!-- Cheat 4: Vector DB RAG Query (Qdrant / Chroma) -->
+                    <div class="cheat-card spotlight-card">
+                        <div class="cheat-header">
+                            <div>
+                                <h4><i class="fa-solid fa-database accent"></i> Vector Search & Hybrid RAG</h4>
+                                <span class="cheat-badge">Python Vector DB</span>
+                            </div>
+                            <button class="btn-text btn-sm copy-cheat-btn" data-cheat="vectordb"><i class="fa-regular fa-copy"></i> Copy</button>
+                        </div>
+                        <pre class="cheat-code"><code># Query vector database with dense embeddings
+results = client.search(
+    collection_name="codebase_chunks",
+    query_vector=embedding_vector,
+    limit=5,
+    query_filter={
+        "must": [{"key": "language", "match": {"value": "typescript"}}]
+    }
+)
+context = "\n".join([r.payload["code"] for r in results])</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             7. DEVELOPER SNIPPETS & PROMPT VAULT
+             =================================================================== -->
+        <section class="section" id="snippets">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-badge"><i class="fa-solid fa-box-archive"></i> Personal Knowledge</span>
+                    <h2 class="section-title">Developer Snippets & Prompt Vault</h2>
+                    <p class="section-description">
+                        Curate your personal collection of reusable code blocks, regex patterns, and AI system prompts. Stored safely in your browser's persistent storage.
+                    </p>
+                </div>
+
+                <div class="vault-controls-bar">
+                    <div class="vault-search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="vault-search-input" placeholder="Search saved snippets or prompts...">
+                    </div>
+                    <div class="vault-filter-pills">
+                        <button class="vault-pill active" data-tag="all">All Items</button>
+                        <button class="vault-pill" data-tag="ai">AI / Prompts</button>
+                        <button class="vault-pill" data-tag="typescript">TypeScript</button>
+                        <button class="vault-pill" data-tag="python">Python</button>
+                        <button class="vault-pill" data-tag="sql">SQL / Backend</button>
+                    </div>
+                    <button class="btn btn-primary btn-sm" id="open-new-snippet-btn">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>New Snippet</span>
+                    </button>
+                </div>
+
+                <!-- Snippet Vault Grid -->
+                <div class="vault-grid" id="vault-grid">
+                    <!-- Populated dynamically by JS from localStorage with fallback presets -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             8. DEVELOPER FOCUS LAB & COMFORT SUITE
+             =================================================================== -->
+        <section class="section" id="focus-lab">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-badge"><i class="fa-solid fa-headphones"></i> Ergonomics & Flow</span>
+                    <h2 class="section-title">Developer Focus Lab & Audio Soundscape</h2>
+                    <p class="section-description">
+                        Maximize mental clarity with an offline synthesized ambient sound generator, customizable Pomodoro flow timer, and developer daily sprint tracker.
+                    </p>
+                </div>
+
+                <div class="focus-grid">
+                    <!-- Pomodoro Focus Timer -->
+                    <div class="focus-card spotlight-card">
+                        <div class="focus-timer-header">
+                            <span class="focus-pill active" data-mode="pomodoro">25m Focus</span>
+                            <span class="focus-pill" data-mode="short">5m Short Break</span>
+                            <span class="focus-pill" data-mode="long">15m Long Break</span>
+                        </div>
+
+                        <div class="timer-display-wrap">
+                            <div class="timer-circle">
+                                <span class="timer-digits" id="timer-digits">25:00</span>
+                                <span class="timer-sub" id="timer-status-text">Deep Work Sprint</span>
+                            </div>
+                        </div>
+
+                        <div class="timer-actions-row">
+                            <button class="btn btn-primary" id="timer-toggle-btn">
+                                <i class="fa-solid fa-play" id="timer-icon"></i>
+                                <span id="timer-btn-text">Start Focus</span>
+                            </button>
+                            <button class="btn btn-outline" id="timer-reset-btn">
+                                <i class="fa-solid fa-rotate-left"></i>
+                                <span>Reset</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Ambient Sound Generator (Pure Web Audio API) -->
+                    <div class="focus-card spotlight-card">
+                        <h3><i class="fa-solid fa-wave-square accent"></i> Ambient Sound Synthesizer</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                            100% offline procedural audio generated dynamically in real-time via Web Audio API. Zero external audio downloads.
+                        </p>
+
+                        <div class="sound-presets-grid">
+                            <button class="sound-chip" data-sound="rain">
+                                <i class="fa-solid fa-cloud-rain"></i>
+                                <span>Cyber Rain</span>
+                            </button>
+                            <button class="sound-chip" data-sound="binaural">
+                                <i class="fa-solid fa-brain"></i>
+                                <span>Alpha Waves (10Hz)</span>
+                            </button>
+                            <button class="sound-chip" data-sound="brown">
+                                <i class="fa-solid fa-wind"></i>
+                                <span>Deep Brown Noise</span>
+                            </button>
+                        </div>
+
+                        <div class="audio-controls-box">
+                            <div class="audio-vol-row">
+                                <label for="audio-volume"><i class="fa-solid fa-volume-high"></i> Volume:</label>
+                                <input type="range" id="audio-volume" min="0" max="1" step="0.05" value="0.5" class="styled-slider">
+                            </div>
+                            <div class="audio-now-playing" id="audio-now-playing">
+                                <span class="pulse-dot"></span>
+                                <span>Audio Generator: Inactive (Click a soundscape above)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daily Developer Checklist / Scratchpad -->
+                    <div class="focus-card spotlight-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+                            <h3 style="margin: 0;"><i class="fa-solid fa-list-check accent"></i> Sprint Scratchpad</h3>
+                            <button class="btn-text btn-sm" id="clear-tasks-btn"><i class="fa-solid fa-trash-can"></i> Clear Done</button>
+                        </div>
+
+                        <div class="task-add-row">
+                            <input type="text" id="new-task-input" placeholder="Add coding task (e.g. Test vector embeddings)...">
+                            <button class="btn btn-primary btn-sm" id="add-task-btn"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+
+                        <ul class="task-list" id="task-list">
+                            <li class="task-item">
+                                <input type="checkbox" checked>
+                                <span class="task-text done">Configure DevForge AI workspace</span>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox">
+                                <span class="task-text">Fine-tune system prompts for Code Auditor</span>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox">
+                                <span class="task-text">Benchmark local Llama 3.3 70B quantized memory</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <a href="#home" class="footer-logo">
+                    <span class="logo-icon" style="width: 28px; height: 28px; font-size: 0.8rem;"><i class="fa-solid fa-microchip"></i></span>
+                    <span>DevForge<span class="accent">.AI</span></span>
+                </a>
+                <p>&copy; 2026 DevForge AI. Engineered for Software Developers & AI Engineers with Vanilla JS, High-Efficiency CSS & Love.</p>
+            </div>
+            <div class="footer-right">
+                <span style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-shield-halved"></i> 100% Client-Side Privacy Guaranteed</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Actions Dock -->
+    <div class="floating-actions">
+        <button class="back-to-top" id="back-to-top" aria-label="Back to Top" title="Scroll to top">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+    </div>
+
+    <!-- ==========================================================================
+         AUTHENTICATION / CLOUD SYNC MODAL DIALOG
+         ========================================================================== -->
+    <div class="modal" id="auth-modal">
+        <div class="auth-card spotlight-card">
+            <button class="modal-close" id="auth-close-btn" aria-label="Close Authentication Dialog">&times;</button>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-auth-tab="signin">Sign In</button>
+                <button class="auth-tab" data-auth-tab="signup">Create Account</button>
+                <button class="auth-tab" data-auth-tab="forgot">Reset Password</button>
+            </div>
+
+            <!-- Error Banner -->
+            <div class="auth-error-banner" id="auth-error-banner">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="auth-error-text">Invalid credentials</span>
+            </div>
+
+            <!-- Pane 1: Sign In -->
+            <div class="auth-pane active" id="auth-pane-signin">
+                <form id="signin-form" class="form-group" style="gap: 1rem;">
+                    <div class="form-group">
+                        <label for="signin-email">Developer Email</label>
+                        <input type="email" id="signin-email" placeholder="alex@devforge.ai" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="signin-password">Password</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="signin-password" placeholder="••••••••" required autocomplete="current-password">
+                            <button type="button" class="toggle-password-btn" data-target="signin-password" aria-label="Toggle password visibility">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" id="signin-submit-btn">
+                        <span>Sign In & Sync Workspace</span>
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    </button>
+                </form>
+
+                <!-- 1-Click Demo Profiles -->
+                <div class="demo-accounts-box">
+                    <div class="demo-accounts-title">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>1-Click Quick Demo Profiles:</span>
+                    </div>
+                    <div class="demo-chips-grid">
+                        <button class="demo-account-chip" data-demo="architect">
+                            <span>🤖 AI Architect</span>
+                            <span class="demo-chip-role">Cloud Sync Active</span>
+                        </button>
+                        <button class="demo-account-chip" data-demo="client">
+                            <span>💻 Full Stack Dev</span>
+                            <span class="demo-chip-role">Local Storage Mode</span>
+                        </button>
+                        <button class="demo-account-chip" data-demo="guest">
+                            <span>⚡ DevOps Eng</span>
+                            <span class="demo-chip-role">Guest Mode</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pane 2: Sign Up -->
+            <div class="auth-pane" id="auth-pane-signup">
+                <form id="signup-form" class="form-group" style="gap: 1rem;">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" placeholder="Elena Rostova" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Developer Email</label>
+                        <input type="email" id="signup-email" placeholder="elena@company.com" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-role">Developer Role</label>
+                        <select id="signup-role" required>
+                            <option value="Senior AI Engineer">Senior AI Engineer</option>
+                            <option value="Full Stack Architect">Full Stack Architect</option>
+                            <option value="Cloud / DevOps Engineer">Cloud / DevOps Engineer</option>
+                            <option value="Independent Developer">Independent Developer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Secure Password</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="signup-password" placeholder="At least 6 characters" required autocomplete="new-password">
+                            <button type="button" class="toggle-password-btn" data-target="signup-password">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <span>Create DevForge Account</span>
+                        <i class="fa-solid fa-user-plus"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Pane 3: Forgot Password -->
+            <div class="auth-pane" id="auth-pane-forgot">
+                <form id="forgot-form" class="form-group" style="gap: 1rem;">
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Enter your registered email to reset your DevForge cloud credentials.
+                    </p>
+                    <div class="form-group">
+                        <label for="forgot-email">Registered Email</label>
+                        <input type="email" id="forgot-email" placeholder="alex@devforge.ai" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <span>Send Recovery Link</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         NEW SNIPPET MODAL DIALOG
+         ========================================================================== -->
+    <div class="modal" id="snippet-modal">
+        <div class="modal-content spotlight-card">
+            <button class="modal-close" id="snippet-modal-close">&times;</button>
+            <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-bookmark accent"></i> Save New Snippet / Prompt</h3>
+            <form id="new-snippet-form" class="form-group" style="gap: 1rem;">
+                <div>
+                    <label style="font-size: 0.85rem; color: var(--text-secondary);">Title</label>
+                    <input type="text" id="new-snippet-title" placeholder="e.g. Robust React Fetch Hook with AbortController" required>
+                </div>
+                <div>
+                    <label style="font-size: 0.85rem; color: var(--text-secondary);">Tag / Category</label>
+                    <select id="new-snippet-tag" required>
+                        <option value="ai">AI / Prompt</option>
+                        <option value="typescript">TypeScript</option>
+                        <option value="python">Python</option>
+                        <option value="sql">SQL / Backend</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size: 0.85rem; color: var(--text-secondary);">Code / Prompt Content</label>
+                    <textarea id="new-snippet-code" class="code-textarea" rows="8" placeholder="Paste your code or prompt template here..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Save to Vault</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         CODE EXPORT MODAL (PYTHON / NODE.JS / CURL)
+         ========================================================================== -->
+    <div class="modal" id="export-modal">
+        <div class="modal-content spotlight-card" style="max-width: 680px;">
+            <button class="modal-close" id="export-modal-close">&times;</button>
+            <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-code accent"></i> Export Prompt to SDK Code</h3>
+            
+            <div class="export-tabs-bar" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                <button class="mini-chip active" data-exportlang="python">Python (OpenAI / Anthropic)</button>
+                <button class="mini-chip" data-exportlang="node">Node.js (TypeScript)</button>
+                <button class="mini-chip" data-exportlang="curl">cURL Command</button>
+            </div>
+
+            <pre class="export-code-pre" id="export-code-content" style="background: var(--code-bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); font-family: var(--font-mono); font-size: 0.85rem; overflow-x: auto; color: var(--text-primary);"></pre>
+
+            <div style="display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 1rem;">
+                <button class="btn btn-primary btn-sm" id="copy-export-code-btn"><i class="fa-regular fa-copy"></i> Copy Code</button>
+                <button class="btn btn-outline btn-sm" id="close-export-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         DEVELOPER COMMAND PALETTE (CTRL + K)
+         ========================================================================== -->
+    <div class="cmd-modal" id="cmd-modal">
+        <div class="cmd-box">
+            <div class="cmd-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="cmd-input" placeholder="Type a tool, utility, or jump to section..." autofocus>
+            </div>
+            <div class="cmd-list" id="cmd-list">
+                <div class="cmd-group-title">Core Platforms & Workbenches</div>
+                <div class="cmd-item" data-action="navigate" data-target="#ai-workbench">
+                    <div class="cmd-item-left"><i class="fa-solid fa-brain"></i> AI Prompt & System Workbench</div>
+                    <span class="cmd-shortcut">#workbench</span>
+                </div>
+                <div class="cmd-item" data-action="navigate" data-target="#models">
+                    <div class="cmd-item-left"><i class="fa-solid fa-chart-simple"></i> Model Intelligence & VRAM Matrix</div>
+                    <span class="cmd-shortcut">#models</span>
+                </div>
+                <div class="cmd-item" data-action="navigate" data-target="#utilities">
+                    <div class="cmd-item-left"><i class="fa-solid fa-screwdriver-wrench"></i> Developer Utilities Hub</div>
+                    <span class="cmd-shortcut">#utilities</span>
+                </div>
+                <div class="cmd-item" data-action="navigate" data-target="#playground">
+                    <div class="cmd-item-left"><i class="fa-solid fa-terminal"></i> Live Multi-Language Playground</div>
+                    <span class="cmd-shortcut">#playground</span>
+                </div>
+                <div class="cmd-item" data-action="navigate" data-target="#cheatsheets">
+                    <div class="cmd-item-left"><i class="fa-solid fa-code"></i> AI API & SDK Cheat Sheets</div>
+                    <span class="cmd-shortcut">#cheats</span>
+                </div>
+                <div class="cmd-item" data-action="navigate" data-target="#snippets">
+                    <div class="cmd-item-left"><i class="fa-solid fa-box-archive"></i> Personal Snippet Vault</div>
+                    <span class="cmd-shortcut">#snippets</span>
+                </div>
+                <div class="cmd-item" data-action="navigate" data-target="#focus-lab">
+                    <div class="cmd-item-left"><i class="fa-solid fa-headphones"></i> Focus Lab & Ambient Audio</div>
+                    <span class="cmd-shortcut">#focus</span>
+                </div>
+
+                <div class="cmd-group-title">Instant Developer Actions</div>
+                <div class="cmd-item" data-action="quick-uuid">
+                    <div class="cmd-item-left"><i class="fa-solid fa-fingerprint"></i> Generate & Copy Fresh UUID v4</div>
+                    <span class="cmd-shortcut">UUID</span>
+                </div>
+                <div class="cmd-item" data-action="quick-timer">
+                    <div class="cmd-item-left"><i class="fa-solid fa-stopwatch"></i> Start 25-Min Focus Sprint</div>
+                    <span class="cmd-shortcut">POMODORO</span>
+                </div>
+                <div class="cmd-item" data-action="toggle-theme">
+                    <div class="cmd-item-left"><i class="fa-solid fa-circle-half-stroke"></i> Toggle Dark / Light Theme</div>
+                    <span class="cmd-shortcut">THEME</span>
+                </div>
+                <div class="cmd-item" data-action="open-auth">
+                    <div class="cmd-item-left"><i class="fa-solid fa-user-astronaut"></i> Workspace Profiles & Cloud Sync</div>
+                    <span class="cmd-shortcut">SYNC</span>
+                </div>
+            </div>
+            <div class="cmd-footer">
+                <span>Navigate <kbd>↑</kbd> <kbd>↓</kbd></span>
+                <span>Select <kbd>↵</kbd></span>
+                <span>Close <kbd>ESC</kbd></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Main Logic Script -->
+    <script src="script.js"></script>
+</body>
+</html>
